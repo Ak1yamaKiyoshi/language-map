@@ -133,11 +133,36 @@ func (hi *hoverableImage) MouseIn(*desktop.MouseEvent) {
 }
 
 
-
 func (hi *hoverableImage) MouseOut() {
 	// This method is called when the mouse leaves the image area
 }
 
+
+type ZoomableImage struct {
+	widget.BaseWidget 
+	image *canvas.Image
+	zoomFactor float64
+}
+
+func NewZoomableImage(img *canvas.Image) *ZoomableImage {
+	zi := &ZoomableImage{image: img, zoomFactor: 1.0}
+	zi.ExtendBaseWidget(zi)
+	return zi 
+}
+
+func (zi *ZoomableImage) CreateRenderer() fyne.WidgetRenderer {
+	return widget.NewSimpleRenderer(zi.image)
+}
+
+func (zi *ZoomableImage) SetZoomFactor(factor float64) {
+	zi.zoomFactor = factor 
+	zi.Refresh() 
+}
+
+func (zi *ZoomableImage) Tapped(ev *fyne.PointEvent) {
+	zi.zoomFactor *= 1.2
+	zi.Refresh()
+}
 
 
 func main() {
@@ -150,6 +175,9 @@ func main() {
 	mapImage := getMap(scale, dir)
 	
 	hoverableMapImage := newHoverableImage(mapImage)
+	// zoomableImg := NewZoomableImage(mapImage)
+	
+
 	scrollContainer := container.NewScroll(hoverableMapImage)
 	window.SetContent(scrollContainer)
 

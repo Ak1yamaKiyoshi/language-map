@@ -133,7 +133,7 @@ cv.setMouseCallback("labeltool", capture_movement)
 cv.createTrackbar(
     "Year", "labeltool", 100, 100, year_slider_callback
 )  # 0-100 corresponds to 1924-2024
-cv.createTrackbar(
+cv.createTrackbar(  
     "Intensity", "labeltool", 50, 100, intensity_slider_callback
 )  # 0-100 for intensity
 
